@@ -22,12 +22,18 @@ class ActionsStartEndEventHandler(EventHandlerExtensionPoint):
     - :py:class:`colcon_core.event.test.TestFailure`
     """
 
+    # this handler is disabled by default
+    # in favor of the `console_start_end` handler 
+    # but other handlers might choose to change that presetting
+    ENABLED_BY_DEFAULT = False
+
     def __init__(self):  # noqa: D107
         super().__init__()
         satisfies_version(
             EventHandlerExtensionPoint.EXTENSION_POINT_VERSION, '^1.0')
         self._start_times = {}
         self._with_test_failures = set()
+        self.enabled = ActionsStartEndEventHandler.ENABLED_BY_DEFAULT
 
     def __call__(self, event):  # noqa: D102
         data = event[0]
